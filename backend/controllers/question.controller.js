@@ -1,5 +1,5 @@
-import Question from "../models/question.model";
-import User from "../models/user.model";
+import Question from "../models/question.model.js";
+import User from "../models/user.model.js";
 
 export const createQuestion = async (req, res) => {
   try {
@@ -33,21 +33,11 @@ export const createQuestion = async (req, res) => {
 
 export const getAllQuestions = async (req, res) => {
   try {
-    const question = await Question.find()
+    const questions = await Question.find()
       .populate("author", "username profilepic")
-      .populate({
-        path: "answers",
-        populate: { path: "author", select: "username profilepic" },
-      });
+      .sort({ createdAt: -1 });
 
-    if (!question) {
-      return res.status(404).json({ message: "Question not found" });
-    }
-
-    question.views += 1;
-    await question.save();
-
-    res.status(200).json(question);
+    res.status(200).json(questions);
   } catch (error) {
     console.error("Error in getAllQuestions controller", error.message);
     res.status(500).json({ message: "Internal server error" });

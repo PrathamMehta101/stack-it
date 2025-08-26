@@ -1,5 +1,11 @@
 import express from "express";
-import { protectRoute } from "../middleware/protectRoute";
+import { protectRoute } from "../middleware/protectRoute.js";
+import {
+  acceptAnswer,
+  createAnswer,
+  deleteAnswer,
+  voteAnswer,
+} from "../controllers/answer.controller.js";
 
 const router = express.Router();
 

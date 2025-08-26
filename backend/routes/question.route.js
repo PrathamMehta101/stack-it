@@ -1,11 +1,11 @@
 import express from "express";
-import { protectRoute } from "../middleware/protectRoute";
+import { protectRoute } from "../middleware/protectRoute.js";
 import {
   createQuestion,
   deleteQuestion,
   getAllQuestions,
   getQuestionById,
-} from "../controllers/question.controller";
+} from "../controllers/question.controller.js";
 
 const router = express.Router();
 

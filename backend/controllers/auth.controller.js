@@ -1,6 +1,7 @@
-import bcrypt from "bcryptjs";
+import bcrypt, { compareSync } from "bcryptjs";
 import User from "../models/user.model.js";
 import { generateTokenAndSetCookie } from "../lib/generateTokenAndSetCookie.js";
+import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
   try {
@@ -71,5 +72,19 @@ export const logout = (req, res) => {
   } catch (error) {
     console.log("Error in logout controller", error.message);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getMe = async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+    if (!token) return res.status(401).json({ error: "No token provided" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded);
+    const user = await User.findById(decoded.id);
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error in getMe controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
